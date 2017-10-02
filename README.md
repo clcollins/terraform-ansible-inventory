@@ -19,7 +19,7 @@ Make sure you are in the directory that contains the terraform.tfstate file, the
     ansible -i path.to.inventory.py -m ping all
 
 
-# Extending
+## Extending
 
 To add more groups based on AWS tags, you can edit the inventory.py file and add more tags to the "grouping_attrs" array:
 
