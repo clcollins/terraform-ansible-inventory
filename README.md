@@ -21,9 +21,23 @@ Make sure you are in the directory that contains the terraform.tfstate file, the
 
 ## Extending
 
-To add more groups based on AWS tags, you can edit the inventory.py file and add more tags to the "grouping_attrs" array:
+To add more groups based on AWS tags, you can edit the inventory.py file and add more tags to the "grouping_attrs"  and "attributes" arrays.  The "grouping_attrs" array is what is used to create the actual Ansible inventory groups.
 
     # Default
+    attributes = [
+       'ami',
+       'availability_zone',
+       'instance_type',
+       'private_dns',
+       'private_ip',
+       'public_dns',
+       'public_ip',
+       'tags.Name',
+       'tags.Purpose',
+       'tags.Type',
+       'tags.Ami'
+     ]
+
     grouping_attrs = [
       'availability_zone',
       'tags.Purpose',
