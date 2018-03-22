@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import argparse
 import json
@@ -11,27 +11,27 @@ def get_tfstate_data(statefile):
             resources = inventory['modules'][0].get('resources')
 
         return resources
-    except:
-        raise
+    except IOError:
+        return {}
 
 
 def parse_tfstate_data(resources):
-
     instances = []
 
     attributes = [
-                  'ami',
-                  'availability_zone',
-                  'instance_type',
-                  'private_dns',
-                  'private_ip',
-                  'public_dns',
-                  'public_ip',
-                  'tags.Name',
-                  'tags.Purpose',
-                  'tags.Type',
-                  'tags.Ami'
-                 ]
+        'ami',
+        'availability_zone',
+        'instance_type',
+        'private_dns',
+        'private_ip',
+        'public_dns',
+        'public_ip',
+        'tags.Name',
+        'tags.Purpose',
+        'tags.Role',
+        'tags.Type',
+        'tags.Ami'
+    ]
 
     for k, v in resources.items():
         if v['type'] == 'aws_instance':
@@ -65,23 +65,26 @@ def list(statefile):
 def create_inventory(instances):
     inventory = {}
     grouping_attrs = [
-      'availability_zone',
-      'tags.Purpose',
-      'tags.Type',
-      'tags.Ami'
+        'availability_zone',
+        'tags.Name',
+        'tags.Purpose',
+        'tags.Role',
+        'tags.Type',
+        'tags.Ami'
     ]
     for instance in instances:
         name = instance['public_ip']
         for attr in grouping_attrs:
             if attr in instance:
                 group = instance[attr]
-                if group in inventory:
-                    inventory[group]['hosts'].append(name)
-                else:
-                    inventory[group] = {}
-                    inventory[group]['hosts'] = [name]
+                if group:
+                    if group in inventory:
+                        inventory[group]['hosts'].append(name)
+                    else:
+                        inventory[group] = {}
+                        inventory[group]['hosts'] = [name]
 
-                inventory[group]['vars'] = {"ansible_user": "root"}
+                    inventory[group]['vars'] = {"ansible_user": "root"}
 
     return inventory
 
@@ -98,10 +101,12 @@ def host(statefile, host):
 def main():
     global debug_set
 
+    response = {}
+
     statefile = 'terraform.tfstate'
 
     parser = argparse.ArgumentParser(
-            description="Return dynamic inventory for Ansible")
+        description="Return dynamic inventory for Ansible")
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--list',
                        action='store_true',
@@ -130,7 +135,8 @@ def main():
     if args.host:
         response = host(statefile, host)
 
-    print(json.JSONEncoder().encode(response))
+    if response:
+        print(json.JSONEncoder().encode(response))
 
 
 if __name__ == '__main__':
