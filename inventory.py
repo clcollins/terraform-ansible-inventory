@@ -16,23 +16,22 @@ def get_tfstate_data(statefile):
 
 
 def parse_tfstate_data(resources):
-
     instances = []
 
     attributes = [
-                  'ami',
-                  'availability_zone',
-                  'instance_type',
-                  'private_dns',
-                  'private_ip',
-                  'public_dns',
-                  'public_ip',
-                  'tags.Name',
-                  'tags.Purpose',
-                  'tags.Role',
-                  'tags.Type',
-                  'tags.Ami'
-                 ]
+        'ami',
+        'availability_zone',
+        'instance_type',
+        'private_dns',
+        'private_ip',
+        'public_dns',
+        'public_ip',
+        'tags.Name',
+        'tags.Purpose',
+        'tags.Role',
+        'tags.Type',
+        'tags.Ami'
+    ]
 
     for k, v in resources.items():
         if v['type'] == 'aws_instance':
@@ -66,12 +65,12 @@ def list(statefile):
 def create_inventory(instances):
     inventory = {}
     grouping_attrs = [
-      'availability_zone',
-      'tags.Name',
-      'tags.Purpose',
-      'tags.Role',
-      'tags.Type',
-      'tags.Ami'
+        'availability_zone',
+        'tags.Name',
+        'tags.Purpose',
+        'tags.Role',
+        'tags.Type',
+        'tags.Ami'
     ]
     for instance in instances:
         name = instance['public_ip']
@@ -107,7 +106,7 @@ def main():
     statefile = 'terraform.tfstate'
 
     parser = argparse.ArgumentParser(
-            description="Return dynamic inventory for Ansible")
+        description="Return dynamic inventory for Ansible")
     group = parser.add_mutually_exclusive_group()
     group.add_argument('--list',
                        action='store_true',
