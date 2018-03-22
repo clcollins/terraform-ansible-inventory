@@ -29,6 +29,7 @@ def parse_tfstate_data(resources):
                   'public_ip',
                   'tags.Name',
                   'tags.Purpose',
+                  'tags.Role',
                   'tags.Type',
                   'tags.Ami'
                  ]
@@ -66,7 +67,9 @@ def create_inventory(instances):
     inventory = {}
     grouping_attrs = [
       'availability_zone',
+      'tags.Name',
       'tags.Purpose',
+      'tags.Role',
       'tags.Type',
       'tags.Ami'
     ]
