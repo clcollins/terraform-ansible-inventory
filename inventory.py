@@ -102,6 +102,8 @@ def host(statefile, host):
 def main():
     global debug_set
 
+    response = {}
+
     statefile = 'terraform.tfstate'
 
     parser = argparse.ArgumentParser(
@@ -134,7 +136,8 @@ def main():
     if args.host:
         response = host(statefile, host)
 
-    print(json.JSONEncoder().encode(response))
+    if response:
+        print(json.JSONEncoder().encode(response))
 
 
 if __name__ == '__main__':
