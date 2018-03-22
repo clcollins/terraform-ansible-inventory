@@ -34,13 +34,16 @@ To add more groups based on AWS tags, you can edit the inventory.py file and add
        'public_ip',
        'tags.Name',
        'tags.Purpose',
+       'tags.Role',
        'tags.Type',
        'tags.Ami'
      ]
 
     grouping_attrs = [
       'availability_zone',
+      'tags.Name',
       'tags.Purpose',
+      'tags.Role',
       'tags.Type',
       'tags.Ami'
     ]
