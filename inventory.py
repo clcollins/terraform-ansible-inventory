@@ -11,8 +11,8 @@ def get_tfstate_data(statefile):
             resources = inventory['modules'][0].get('resources')
 
         return resources
-    except:
-        raise
+    except IOError:
+        return {}
 
 
 def parse_tfstate_data(resources):
