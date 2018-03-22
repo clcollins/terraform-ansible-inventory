@@ -78,13 +78,14 @@ def create_inventory(instances):
         for attr in grouping_attrs:
             if attr in instance:
                 group = instance[attr]
-                if group in inventory:
-                    inventory[group]['hosts'].append(name)
-                else:
-                    inventory[group] = {}
-                    inventory[group]['hosts'] = [name]
+                if group:
+                    if group in inventory:
+                        inventory[group]['hosts'].append(name)
+                    else:
+                        inventory[group] = {}
+                        inventory[group]['hosts'] = [name]
 
-                inventory[group]['vars'] = {"ansible_user": "root"}
+                    inventory[group]['vars'] = {"ansible_user": "root"}
 
     return inventory
 
